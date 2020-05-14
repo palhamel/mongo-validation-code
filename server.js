@@ -52,15 +52,16 @@ app.get("/", (req, res) => {
 // POST Person
 // Create using our Person model, auto validate when save(), async await, store in savedPerson and send back result to client
 // Test in Postman
-// Handling errors via try/catch
+// Handling errors via try/catch - generate errors to use in client or server
 
 app.post('/people', async (req, res) => {
   try {
+    // success:
     const person = await new Person(req.body).save();
-    res.json(person);
+    res.status(200).json(person);
   } catch (err) {
-    res.json({ message: "Could not save person", errors: err.errors });
-
+    // bad request:
+    res.status(400).json({ message: "Could not save person", errors: err.errors });
   }
 })
 
