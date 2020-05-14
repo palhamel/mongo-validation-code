@@ -28,10 +28,11 @@ const Person = mongoose.model("Person", {
     default: Date.now,
   },
 });
+/* 
 Person.deleteMany().then(() => {
-  new Person({ name: 'Anders', height: 170 }).save()
+  // new Person({ name: 'Anders', height: 170 }).save()
 })
-
+ */
 // Defines the port the app will run on. Defaults to 8080, but can be
 // overridden when starting the server. For example:
 //
@@ -47,6 +48,25 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Hello man!");
 });
+
+// POST Person
+// Create using our Person model, auto validate when save(), async await, store in savedPerson and send back result to client
+// Test in Postman
+// Handling errors via try/catch
+
+app.post('/people', async (req, res) => {
+  try {
+    const person = await new Person(req.body).save();
+    res.json(person);
+  } catch (err) {
+    res.json({ message: "Could not save person", errors: err.errors });
+
+  }
+})
+
+
+
+
 
 // Start the server
 app.listen(port, () => {
